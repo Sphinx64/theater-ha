@@ -53,3 +53,6 @@
 1776868244: New connection from 172.18.0.3:33605 on port 1883.
 1776868244: New client connected from 172.18.0.3:33605 as 1jWXf9fqlGn8S7heOhlRRv (p4, c1, k60).
 1776868277: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776868634: Client 1jWXf9fqlGn8S7heOhlRRv [172.18.0.3:33605] disconnected: connection closed by client.
+1776868643: New connection from 172.18.0.3:49895 on port 1883.
+1776868643: New client connected from 172.18.0.3:49895 as 1Cagok7vPUdZVnTSO8AOJ7 (p4, c1, k60).
