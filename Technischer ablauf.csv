@@ -1,0 +1,25 @@
+Folien;Szene ;HDMI;;Licht;Musik;
+;;PC PP;IPAD;;;synchron?
+1 bis 5;Intro;PP Kunst;;neutral 50;;licht musik gleichzeitig start
+7;Schloss;;Schloss;aus;0 königinenmusik;licht musik gleichzeitig start
+8;Langeweile;;Schloss Hintergrund;neutral 75;0_1 Naturmusik ;licht musik gleichzeitig start
+9;Blau;;BLAU Schloss Hintergrund;Blau;Blau;licht musik gleichzeitig start
+10;Neutral;;Schloss Hintergrund;neutral 75;langeweile ;licht musik gleichzeitig start
+11;Rot;;Rot Schloss Hintergrund;Rot;rot;zuerst licht. Musik nächster click
+12;Neutral;;Schloss Hintergrund;neutral 75;langeweile ;licht musik gleichzeitig start
+13;Gelb;;Gelb Schloss Hintergrund;Gelb;gelb Charlston;licht musik gleichzeitig start
+14;Zickiges Gelb;;Schloss Hintergrund;Giftgelb;gelbTango;zuerst licht. Musik nächster click
+15;Streit P1;;Schloss Hintergrund;Streit P1;-;nur licht
+15;Streit P2;;Schloss Hintergrund;Streit P2;-;nur licht
+15;Streit P3;;Schloss Hintergrund;Streit P3;-;nur licht
+15;Streit P4;;Schloss Hintergrund;Streit P4;-;nur licht
+15;Streit P5;;Schloss Hintergrund;Streit P5;-;nur licht
+15;Streit P6;;Schloss Hintergrund;Streit P6;-;nur licht
+15;Streit P7 (alle);;Schloss Hintergrund;Streit P7 (alle);-;nur licht
+16;Streit P8 (grau);;Schloss Grau ;Streit P8 (grau);mask;zuerst licht. Musik nächster click
+17;Tränen;;Schloss nicht mehr grau;regen;mothership;zuerst licht. Musik nächster click
+18;Emil malt;;Procreate Malen;fade 25%;Handpan;Licht Musik  gleichzeitig
+19;Bilder;Diashow Kunstwerke;;fade 25%;the wind that shakes the corn;Licht Musik und Video gleichzeitig
+20;Bändertanz;Bändertanz;;fade 25%;video ton;Licht Musik von video und Video gleichzeitig. 
+21;Fade out ;;Black;aus;-;
+22;Applaus;;Black;neutral 75;-;

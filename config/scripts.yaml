@@ -875,7 +875,9 @@ theater_streit_phase_1_v2:
     data:
       rgb_color: "{{ (states('input_text.theater_farbe_gelb') if ',' in states('input_text.theater_farbe_gelb') else '255,126,13').split(',') | map('int') | list }}"
       brightness_pct: 50
-      transition: 0.5
+      transition: 0
+  - delay:
+      milliseconds: 300
   - parallel:
     - action: script.turn_on
       target:
@@ -1016,7 +1018,9 @@ theater_streit_phase_2_v2:
     data:
       rgb_color: "{{ (states('input_text.theater_farbe_blau') if ',' in states('input_text.theater_farbe_blau') else '0,150,255').split(',') | map('int') | list }}"
       brightness_pct: 50
-      transition: 0.5
+      transition: 0
+  - delay:
+      milliseconds: 300
   - parallel:
     - action: script.turn_on
       target:
@@ -1157,7 +1161,9 @@ theater_streit_phase_3_v2:
     data:
       rgb_color: "{{ (states('input_text.theater_farbe_rot') if ',' in states('input_text.theater_farbe_rot') else '255,0,0').split(',') | map('int') | list }}"
       brightness_pct: 50
-      transition: 0.5
+      transition: 0
+  - delay:
+      milliseconds: 300
   - parallel:
     - action: script.turn_on
       target:
