@@ -56,3 +56,53 @@
 1776868634: Client 1jWXf9fqlGn8S7heOhlRRv [172.18.0.3:33605] disconnected: connection closed by client.
 1776868643: New connection from 172.18.0.3:49895 on port 1883.
 1776868643: New client connected from 172.18.0.3:49895 as 1Cagok7vPUdZVnTSO8AOJ7 (p4, c1, k60).
+1776869775: Client 1Cagok7vPUdZVnTSO8AOJ7 [172.18.0.3:49895] disconnected: connection closed by client.
+1776869781: New connection from 172.18.0.3:60293 on port 1883.
+1776869781: New client connected from 172.18.0.3:60293 as 45ah25qavunIYbB1khdMIi (p4, c1, k60).
+1776870077: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776871188: Client 45ah25qavunIYbB1khdMIi [172.18.0.3:60293] disconnected: connection closed by client.
+1776871194: New connection from 172.18.0.3:38735 on port 1883.
+1776871194: New client connected from 172.18.0.3:38735 as 3u8AttnPSYBuLBBNYJsVEI (p4, c1, k60).
+1776871485: Client 3u8AttnPSYBuLBBNYJsVEI [172.18.0.3:38735] disconnected: connection closed by client.
+1776871491: New connection from 172.18.0.3:39117 on port 1883.
+1776871491: New client connected from 172.18.0.3:39117 as 4gm51RY6oZrDl1MlUkDv7I (p4, c1, k60).
+1776871527: Client 4gm51RY6oZrDl1MlUkDv7I [172.18.0.3:39117] disconnected: connection closed by client.
+1776871537: New connection from 172.18.0.3:53617 on port 1883.
+1776871537: New client connected from 172.18.0.3:53617 as 1FDn5p7kXKkE4ssjVQE76x (p4, c1, k60).
+1776871878: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776871969: Client 1FDn5p7kXKkE4ssjVQE76x [172.18.0.3:53617] disconnected: connection closed by client.
+1776871978: New connection from 172.18.0.3:44699 on port 1883.
+1776871978: New client connected from 172.18.0.3:44699 as 2zSZaZ1p4YpCCnGgM0M83N (p4, c1, k60).
+1776872076: Client 2zSZaZ1p4YpCCnGgM0M83N [172.18.0.3:44699] disconnected: connection closed by client.
+1776872085: New connection from 172.18.0.3:56661 on port 1883.
+1776872085: New client connected from 172.18.0.3:56661 as 76WdfRLYifO6VxdT8o1ETW (p4, c1, k60).
+1776872939: Client 76WdfRLYifO6VxdT8o1ETW [172.18.0.3:56661] disconnected: connection closed by client.
+1776872950: New connection from 172.18.0.3:55513 on port 1883.
+1776872950: New client connected from 172.18.0.3:55513 as 5zi039VcZ12Ntu0O4HTzHj (p4, c1, k60).
+1776873678: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776874121: Client 5zi039VcZ12Ntu0O4HTzHj [172.18.0.3:55513] disconnected: connection closed by client.
+1776874133: New connection from 172.18.0.3:60709 on port 1883.
+1776874133: New client connected from 172.18.0.3:60709 as 5S9xtSGZn73K7pXbR4gJ0F (p4, c1, k60).
+1776874285: Client 5S9xtSGZn73K7pXbR4gJ0F [172.18.0.3:60709] disconnected: connection closed by client.
+1776874298: New connection from 172.18.0.3:57307 on port 1883.
+1776874298: New client connected from 172.18.0.3:57307 as 3lcy6FlZK82L065V2XHxdK (p4, c1, k60).
+1776875156: Client 3lcy6FlZK82L065V2XHxdK [172.18.0.3:57307] disconnected: connection closed by client.
+1776875167: New connection from 172.18.0.3:34101 on port 1883.
+1776875167: New client connected from 172.18.0.3:34101 as 2gKbsiUkx6enqeNyRXmVWF (p4, c1, k60).
+1776875478: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776875537: Client 2gKbsiUkx6enqeNyRXmVWF [172.18.0.3:34101] disconnected: connection closed by client.
+1776875548: New connection from 172.18.0.3:50543 on port 1883.
+1776875548: New client connected from 172.18.0.3:50543 as 36v0I32XyxJJ3KTE0wsvrp (p4, c1, k60).
+1776875767: Client 36v0I32XyxJJ3KTE0wsvrp [172.18.0.3:50543] disconnected: connection closed by client.
+1776875777: New connection from 172.18.0.3:42331 on port 1883.
+1776875777: New client connected from 172.18.0.3:42331 as 0cYB5D8092TMHxtx6D7Pav (p4, c1, k60).
+1776877091: Client 0cYB5D8092TMHxtx6D7Pav [172.18.0.3:42331] disconnected: connection closed by client.
+1776877099: New connection from 172.18.0.3:33517 on port 1883.
+1776877099: New client connected from 172.18.0.3:33517 as 4KEOyxovNOnxhmsPwb5yBQ (p4, c1, k60).
+1776877278: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776877777: Client 4KEOyxovNOnxhmsPwb5yBQ [172.18.0.3:33517] disconnected: connection closed by client.
+1776877786: New connection from 172.18.0.3:44785 on port 1883.
+1776877786: New client connected from 172.18.0.3:44785 as 2gtKvsXUZuCs8EyxRyG8Xr (p4, c1, k60).
+1776878207: Client 2gtKvsXUZuCs8EyxRyG8Xr [172.18.0.3:44785] disconnected: connection closed by client.
+1776878215: New connection from 172.18.0.3:47171 on port 1883.
+1776878215: New client connected from 172.18.0.3:47171 as 05baejtgxJUhKQJ06ua8aM (p4, c1, k60).

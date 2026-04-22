@@ -77,12 +77,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:30px;
 .err-msg.show{display:block}
 footer{padding:6px 20px;background:var(--panel);border-top:1px solid var(--border);font-size:10px;color:var(--dim);display:flex;gap:20px}
 footer span.warn{color:var(--accent-2)}
-.info{
-  position:absolute;bottom:20px;left:20px;background:var(--panel);padding:10px 14px;
-  border:1px solid var(--border);border-radius:4px;font-size:10px;color:var(--dim);max-width:320px;line-height:1.6;
-}
-.info.tuya{color:var(--accent-2);border-color:var(--accent-2)}
-.info b{color:var(--text)}
+.mode-toggle button[title]{cursor:help}
 </style>
 </head>
 <body>
@@ -103,15 +98,14 @@ footer span.warn{color:var(--accent-2)}
   <h1>Theater<span>.</span>Vis</h1>
   <div class="tag">Live Lichtvisualisierung</div>
   <div class="mode-toggle">
-    <button id="mode-ideal" class="active">Ideal</button>
-    <button id="mode-tuya">Tuya LedAdvance</button>
+    <button type="button" id="mode-ideal" class="active" title="Ideal: zeigt die Zustände aus Home Assistant nahezu 1:1, mit weichen CSS-Transitions auf dem Visualizer.">Ideal</button>
+    <button type="button" id="mode-tuya" title="Tuya / LedAdvance (Simulation): ca. 250–400 ms Latenz pro Befehl; HA-transition wird nicht nachgebildet (Sprung zum Zielwert); Befehle unter 180 ms werden zusammengefasst (siehe Zähler in der Fußzeile); Wechsel zwischen kräftigem RGB und ‚weiß‘ kann kurz aufblitzen; Helligkeit unter ~1 % wird angehoben. Streit- und Rot-Szenen wirken hier oft rauer als im Ideal-Modus.">Tuya LedAdvance</button>
   </div>
   <div class="status"><span id="statusText">verbindet...</span><span class="dot" id="statusDot"></span></div>
 </header>
 
 <main>
   <div class="stage" id="stage"></div>
-  <div class="info" id="info">Ideal-Modus: zeigt exakt was HA sendet, mit smoothen transitions.</div>
 </main>
 
 <footer>
@@ -267,20 +261,6 @@ function switchMode(newMode){
     if(!el)continue;
     el.classList.remove('tuya-mode','ideal-mode');
     el.classList.add(mode==='tuya'?'tuya-mode':'ideal-mode');
-  }
-  const info=document.getElementById('info');
-  if(mode==='tuya'){
-    info.classList.add('tuya');
-    info.innerHTML = '<b>Tuya LedAdvance Modus</b><br>' +
-      '• ~250ms Command-Latenz<br>' +
-      '• <code>transition:</code> wird ignoriert, springt zum Endwert<br>' +
-      '• Commands < 180ms Abstand werden verworfen<br>' +
-      '• Color↔White-Mode-Wechsel blitzt weiß auf<br>' +
-      '• Brightness unter 1% = praktisch aus<br>' +
-      '<b style="color:var(--accent)">→ hier sollten Streit/Rot-Flicker anders aussehen!</b>';
-  }else{
-    info.classList.remove('tuya');
-    info.textContent = 'Ideal-Modus: zeigt exakt was HA sendet, mit smoothen transitions.';
   }
 }
 document.getElementById('mode-ideal').onclick=()=>switchMode('ideal');

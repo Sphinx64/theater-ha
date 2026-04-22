@@ -1,0 +1,134 @@
+# Dashboard: alle Theater-Scripts zum manuellen Testen.
+# Nach Konfigurationsänderung: Home Assistant neu starten oder
+# „Entwicklerwerkzeuge → YAML neu laden“ (sofern unterstützt).
+
+title: Theater – Script-Test
+views:
+  - title: Scripts
+    path: theater-scripts
+    icon: mdi:script-text-outline
+    cards:
+      - type: markdown
+        content: >
+          **Theater-Scripts** – In den Karten unten auf den **Play**-Button
+          tippen (oder die Zeile öffnen). Laufende Szenen zuerst mit
+          **Master Stop** beenden. **Einzeltropfen** benötigt Parameter;
+          dafür gibt es die Demo-Schaltfläche.
+
+      - type: entities
+        title: Steuerung & Parameter
+        show_header_toggle: false
+        entities:
+          - entity: input_number.theater_master_brightness
+            name: Master-Helligkeit
+          - entity: input_number.theater_master_speed
+            name: Master-Speed
+          - entity: input_number.theater_streit_phase
+            name: Streit-Phase
+          - entity: input_text.theater_streit_last_lamp
+            name: Streit Lauf letzte Lampe (1–12)
+          - type: divider
+          - entity: input_text.theater_farbe_neutral
+            name: Farbe Neutral (R,G,B)
+          - entity: input_text.theater_farbe_grau
+            name: Farbe Grau (R,G,B)
+          - entity: input_text.theater_farbe_gelb
+            name: Farbe Gelb (R,G,B)
+          - entity: input_text.theater_farbe_blau
+            name: Farbe Blau (R,G,B)
+          - entity: input_text.theater_farbe_rot
+            name: Farbe Rot (R,G,B)
+
+      - type: entities
+        title: Master & Aus
+        show_header_toggle: false
+        entities:
+          - entity: script.theater_master_stop_v2
+            name: Master Stop v2
+          - entity: script.theater_blackout_v2
+            name: Blackout v2
+
+      - type: entities
+        title: Szenen (v2)
+        show_header_toggle: false
+        entities:
+          - entity: script.theater_neutral_v2
+            name: Neutral v2
+          - entity: script.theater_blau_v2
+            name: Blau v2
+          - entity: script.theater_rot_v2
+            name: Rot v2
+          - entity: script.theater_gelb_v2
+            name: Gelb v2
+          - entity: script.theater_grau_v2
+            name: Grau v2
+
+      - type: entities
+        title: Streit
+        show_header_toggle: false
+        entities:
+          - entity: script.theater_streit_lauf_v2
+            name: Streit Lauf (Phasen 1–6) v2
+          - entity: script.theater_streit_p7_v2
+            name: Streit Phase 7 v2
+          - entity: script.theater_streit_phase_1_v2
+            name: Streit Phase 1 v2
+          - entity: script.theater_streit_phase_2_v2
+            name: Streit Phase 2 v2
+          - entity: script.theater_streit_phase_3_v2
+            name: Streit Phase 3 v2
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Start Streit
+            icon: mdi:weather-lightning
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.theater_streit_lauf_v2
+          - type: button
+            name: Nächste Phase Streit
+            icon: mdi:skip-next-outline
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.theater_streit_naechste_phase_v2
+
+      - type: entities
+        title: Finale & Sonstiges
+        show_header_toggle: false
+        entities:
+          - entity: script.theater_finale_helper_v2
+            name: Finale Helper v2
+          - entity: script.theater_finale_v2
+            name: Finale v2
+          - entity: script.einzeltropfen
+            name: Einzeltropfen (Parameter nötig)
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Einzeltropfen Demo
+            icon: mdi:water-outline
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.einzeltropfen
+              data:
+                target_light: light.l1
+                drop_color:
+                  - 255
+                  - 80
+                  - 0
+          - type: button
+            name: Master Stop
+            icon: mdi:stop-circle
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.theater_master_stop_v2

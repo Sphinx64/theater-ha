@@ -55,10 +55,35 @@ input_text:
     initial: "255,0,0"
     max: 20
 
+  theater_farbe_neutral:
+    name: Farbe Neutral (R,G,B)
+    initial: "255,255,255"
+    max: 20
+
+  theater_farbe_grau:
+    name: Farbe Grau (R,G,B)
+    initial: "252,237,252"
+    max: 20
+
   theater_master_stop_skip:
     name: Master-Stop-Skip
     initial: ""
     max: 100
+
+  theater_regen_last_color:
+    name: Regen Last Color Index
+    initial: "99"
+    max: 5
+
+  theater_regen_last_lamp:
+    name: Regen Last Lamp Number
+    initial: "0"
+    max: 5
+
+  theater_streit_last_lamp:
+    name: Streit Lauf letzte Lampe (1–12)
+    initial: "0"
+    max: 5
 
 # ============================================================
 # 12 virtuelle Lampen via MQTT
@@ -171,3 +196,13 @@ http:
     - "http://localhost"
     - "http://127.0.0.1"
     - "null"
+
+# Zusätzliches Lovelace-Dashboard: alle Scripts zum Testen (YAML-Datei unten)
+lovelace:
+  dashboards:
+    theater-scripts-test:
+      mode: yaml
+      title: Theater – Script-Test
+      icon: mdi:script-text-outline
+      show_in_sidebar: true
+      filename: theater_scripts_test_dashboard.yaml
