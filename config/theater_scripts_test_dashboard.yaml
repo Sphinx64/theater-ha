@@ -34,6 +34,8 @@ views:
             name: Farbe Grau (R,G,B)
           - entity: input_text.theater_farbe_gelb
             name: Farbe Gelb (R,G,B)
+          - entity: input_text.theater_farbe_giftgelb
+            name: Farbe Giftgelb (R,G,B)
           - entity: input_text.theater_farbe_blau
             name: Farbe Blau (R,G,B)
           - entity: input_text.theater_farbe_rot
@@ -60,6 +62,8 @@ views:
             name: Rot v2
           - entity: script.theater_gelb_v2
             name: Gelb v2
+          - entity: script.theater_giftgelb_v2
+            name: Giftgelb v2
           - entity: script.theater_grau_v2
             name: Grau v2
 
@@ -72,11 +76,17 @@ views:
           - entity: script.theater_streit_p7_v2
             name: Streit Phase 7 v2
           - entity: script.theater_streit_phase_1_v2
-            name: Streit Phase 1 v2
+            name: Streit P1 (Giftgelb still) v2
           - entity: script.theater_streit_phase_2_v2
-            name: Streit Phase 2 v2
+            name: Streit P2 (Blau + Gelb) v2
           - entity: script.theater_streit_phase_3_v2
-            name: Streit Phase 3 v2
+            name: Streit P3 (Rot + Blau/Gelb) v2
+          - entity: script.theater_streit_phase_4_v2
+            name: Streit P4 (Gelb + Rot/Blau) v2
+          - entity: script.theater_streit_phase_5_v2
+            name: Streit P5 (Blau + Gelb/Rot) v2
+          - entity: script.theater_streit_phase_6_v2
+            name: Streit P6 (Rot + Gelb/Blau) v2
 
       - type: horizontal-stack
         cards:

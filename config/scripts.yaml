@@ -540,6 +540,59 @@ theater_gelb_v2:
       rgb_color: '{% set c = states(''input_text.theater_farbe_gelb'') %}{{ (c if '','' in c else ''255,126,13'').split('','') | map(''int'') | list }}'
       brightness_pct: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
       transition: 6
+theater_giftgelb_v2:
+  alias: 'Theater: Giftgelb v2'
+  icon: mdi:palette
+  mode: restart
+  description: Einmaliger Fade auf Giftgelb (Master-Helligkeit, transition 6 s).
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_giftgelb_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: '{% set c = states(''input_text.theater_farbe_neutral'') %}{{ (c if '','' in c else ''255,255,255'').split('','') | map(''int'') | list }}'
+      brightness_pct: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
+      transition: 0
+  - delay: 00:00:01
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: '{% set c = states(''input_text.theater_farbe_giftgelb'') %}{{ (c if '','' in c else ''180,255,0'').split('','') | map(''int'') | list }}'
+      brightness_pct: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
+      transition: 6
 theater_grau_v2:
   alias: 'Theater: Grau v2'
   icon: mdi:cloud
@@ -705,7 +758,7 @@ theater_streit_lauf_v2:
             int(50) %}{% set w = ([420 - s * 7.5, 32] | max) | int %}{% if p in [4,5,6]
             %}{{ (w * 0.42) | int }}{% else %}{{ (w * 0.58) | int }}{% endif %}'
 theater_streit_p7_v2:
-  alias: 'Theater: Streit Phase 7 (Chaos → Dunkel → Grau)'
+  alias: 'Theater: Streit Phase 7 (Chaos → Aus → Grau)'
   icon: mdi:lightning-bolt-circle
   mode: restart
   sequence:
@@ -717,8 +770,6 @@ theater_streit_p7_v2:
   - action: script.turn_on
     target:
       entity_id: script.theater_master_stop_v2
-  - variables:
-      t0: "{{ now().timestamp() }}"
   - parallel:
     - action: script.turn_on
       target:
@@ -726,86 +777,72 @@ theater_streit_p7_v2:
       data:
         variables:
           lamp: light.l1
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l2
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l3
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l4
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l5
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l6
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l7
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l8
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l9
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l10
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l11
-          start_time: "{{ t0 }}"
     - action: script.turn_on
       target:
         entity_id: script.theater_streit_chaos_helper_v2
       data:
         variables:
           lamp: light.l12
-          start_time: "{{ t0 }}"
-  - delay:
-      seconds: 10
   - action: light.turn_off
     target:
       entity_id:
@@ -822,9 +859,8 @@ theater_streit_p7_v2:
       - light.l11
       - light.l12
     data:
-      transition: 1.5
-  - delay:
-      milliseconds: 1500
+      transition: 0
+  - delay: "00:00:01"
   - action: light.turn_on
     target:
       entity_id:
@@ -845,7 +881,7 @@ theater_streit_p7_v2:
       brightness_pct: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
       transition: 2.5
 theater_streit_phase_1_v2:
-  alias: 'Theater: Streit Phase 1 (Gelb)'
+  alias: 'Theater: Streit P1 (Giftgelb still)'
   icon: mdi:circle
   mode: restart
   sequence:
@@ -854,6 +890,324 @@ theater_streit_phase_1_v2:
       entity_id: input_text.theater_master_stop_skip
     data:
       value: script.theater_streit_phase_1_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: "{{ (states('input_text.theater_farbe_giftgelb') if ',' in states('input_text.theater_farbe_giftgelb') else '180,255,0').split(',') | map('int') | list }}"
+      brightness_pct: 50
+      transition: 0
+theater_streit_phase_2_v2:
+  alias: 'Theater: Streit P2 (Blau + Gelb)'
+  icon: mdi:circle
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_phase_2_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: "{{ (states('input_text.theater_farbe_blau') if ',' in states('input_text.theater_farbe_blau') else '0,150,255').split(',') | map('int') | list }}"
+      brightness_pct: 50
+      transition: 0
+  - delay:
+      milliseconds: 300
+  - parallel:
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l1
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l2
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l3
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l4
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l5
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l6
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l7
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l8
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l9
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l10
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l11
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l12
+          base_name: blau
+          flash1_name: gelb
+          flash2_name: gelb
+theater_streit_phase_3_v2:
+  alias: 'Theater: Streit P3 (Rot + Blau/Gelb)'
+  icon: mdi:circle
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_phase_3_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: "{{ (states('input_text.theater_farbe_rot') if ',' in states('input_text.theater_farbe_rot') else '255,0,0').split(',') | map('int') | list }}"
+      brightness_pct: 50
+      transition: 0
+  - delay:
+      milliseconds: 300
+  - parallel:
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l1
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l2
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l3
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l4
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l5
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l6
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l7
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l8
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l9
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l10
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l11
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+    - action: script.turn_on
+      target:
+        entity_id: script.theater_streit_flash_helper_v2
+      data:
+        variables:
+          lamp: light.l12
+          base_name: rot
+          flash1_name: blau
+          flash2_name: gelb
+theater_streit_phase_4_v2:
+  alias: 'Theater: Streit P4 (Gelb + Rot/Blau)'
+  icon: mdi:circle
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_phase_4_v2
   - action: script.turn_on
     target:
       entity_id: script.theater_master_stop_v2
@@ -987,8 +1341,8 @@ theater_streit_phase_1_v2:
           base_name: gelb
           flash1_name: rot
           flash2_name: blau
-theater_streit_phase_2_v2:
-  alias: 'Theater: Streit Phase 2 (Blau)'
+theater_streit_phase_5_v2:
+  alias: 'Theater: Streit P5 (Blau + Gelb/Rot)'
   icon: mdi:circle
   mode: restart
   sequence:
@@ -996,7 +1350,7 @@ theater_streit_phase_2_v2:
     target:
       entity_id: input_text.theater_master_stop_skip
     data:
-      value: script.theater_streit_phase_2_v2
+      value: script.theater_streit_phase_5_v2
   - action: script.turn_on
     target:
       entity_id: script.theater_master_stop_v2
@@ -1130,8 +1484,8 @@ theater_streit_phase_2_v2:
           base_name: blau
           flash1_name: gelb
           flash2_name: rot
-theater_streit_phase_3_v2:
-  alias: 'Theater: Streit Phase 3 (Rot)'
+theater_streit_phase_6_v2:
+  alias: 'Theater: Streit P6 (Rot + Gelb/Blau)'
   icon: mdi:circle
   mode: restart
   sequence:
@@ -1139,7 +1493,7 @@ theater_streit_phase_3_v2:
     target:
       entity_id: input_text.theater_master_stop_skip
     data:
-      value: script.theater_streit_phase_3_v2
+      value: script.theater_streit_phase_6_v2
   - action: script.turn_on
     target:
       entity_id: script.theater_master_stop_v2
@@ -1286,12 +1640,16 @@ theater_master_stop_v2:
       - script.theater_blau_v2
       - script.theater_rot_v2
       - script.theater_gelb_v2
+      - script.theater_giftgelb_v2
       - script.theater_grau_v2
       - script.theater_streit_lauf_v2
       - script.theater_streit_p7_v2
       - script.theater_streit_phase_1_v2
       - script.theater_streit_phase_2_v2
       - script.theater_streit_phase_3_v2
+      - script.theater_streit_phase_4_v2
+      - script.theater_streit_phase_5_v2
+      - script.theater_streit_phase_6_v2
       - script.theater_finale_v2
       - script.theater_finale_helper_v2
       - script.theater_streit_flash_helper_v2
@@ -1606,17 +1964,17 @@ theater_streit_chaos_helper_v2:
   fields:
     lamp:
       description: Ziel-Lampen-Entity
-    start_time:
-      description: Timestamp-Start (von P7 uebergeben)
   sequence:
+  - variables:
+      chaos_start: "{{ now().timestamp() }}"
   - repeat:
       while:
       - condition: template
-        value_template: "{{ (now().timestamp() - (start_time | float)) < 10 }}"
+        value_template: "{{ (now().timestamp() - (chaos_start | float(0))) < 12 }}"
       sequence:
       - variables:
-          elapsed: "{{ now().timestamp() - (start_time | float) }}"
-          chaos_br: "{{ 100 if elapsed < 6 else [(100 - (elapsed - 6) * 22.5) | int, 10] | max }}"
+          elapsed: "{{ now().timestamp() - (chaos_start | float(0)) }}"
+          chaos_br: "{{ [(100 - (elapsed | float(0) / 12 * 100)) | int, 0] | max }}"
           s: "{{ states('input_number.theater_master_speed') | int(50) }}"
           color_name: "{{ ['gelb','blau','rot'] | random }}"
       - action: light.turn_on
@@ -1638,3 +1996,135 @@ theater_streit_naechste_phase_v2:
       entity_id: input_number.theater_streit_phase
     data:
       value: "{{ (states('input_number.theater_streit_phase') | int(1) % 8) + 1 }}"
+# ========= BEAMER (Xgimi Horizon via Android TV Remote Integration) =========
+# Funktionieren NUR wenn im HA die Integration "Android TV Remote" eingerichtet
+# ist und die Entity remote.xgimi_horizon existiert. Lokal wahrscheinlich nicht.
+
+beamer_f1:
+  alias: 'Beamer: F1 (Bild schwarz)'
+  description: F1, dann Vol-Up/Vol-Down — weckt die Fernbedienung wieder auf.
+  icon: mdi:keyboard-f1
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: F1
+    - delay: '00:00:01'
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: VOLUME_UP
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: VOLUME_DOWN
+
+beamer_f1_robust:
+  alias: 'Beamer: F1 robust (mit Pre-Wakeup)'
+  description: Erst Vol-Up/Down zum Wecken, dann F1. Fallback falls beamer_f1 streikt.
+  icon: mdi:keyboard-f1
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: VOLUME_UP
+    - delay: '00:00:00.3'
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: VOLUME_DOWN
+    - delay: '00:00:00.5'
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: F1
+    - delay: '00:00:01'
+    # Zweiter F1-Versuch falls der erste im Wakeup unterging
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: F1
+
+beamer_home:
+  alias: 'Beamer: Home'
+  icon: mdi:home
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: HOME
+
+beamer_zurueck:
+  alias: 'Beamer: Zurück'
+  icon: mdi:arrow-left
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: BACK
+
+beamer_leiser:
+  alias: 'Beamer: Leiser'
+  icon: mdi:volume-minus
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: VOLUME_DOWN
+
+beamer_lauter:
+  alias: 'Beamer: Lauter'
+  icon: mdi:volume-plus
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: VOLUME_UP
+
+beamer_power:
+  alias: 'Beamer: Ein/Aus'
+  icon: mdi:power
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: POWER
+
+beamer_fokus:
+  alias: 'Beamer: Fokus (Remote)'
+  description: Android KEYCODE_FOCUS. Ältere Alternative.
+  icon: mdi:image-filter-center-focus
+  mode: single
+  sequence:
+    - action: remote.send_command
+      target:
+        entity_id: remote.xgimi_horizon
+      data:
+        command: FOCUS
+
+beamer_fokus_adb_2099:
+  alias: 'Beamer: Fokus Keyevent 2099 (ADB)'
+  description: Voraussetzung shell_command.beamer_keyevent_2099 und adb-Verbindung zum Beamer.
+  icon: mdi:usb
+  mode: single
+  sequence:
+    - action: shell_command.beamer_keyevent_2099

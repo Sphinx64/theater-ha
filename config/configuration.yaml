@@ -65,6 +65,11 @@ input_text:
     initial: "252,237,252"
     max: 20
 
+  theater_farbe_giftgelb:
+    name: Farbe Giftgelb (R,G,B)
+    initial: "180,255,0"
+    max: 20
+
   theater_master_stop_skip:
     name: Master-Stop-Skip
     initial: ""

@@ -111,3 +111,26 @@
 1776878753: New client connected from 172.18.0.3:54189 as 5BC5ujnpcN88T3xGa9IQqy (p4, c1, k60).
 1776879077: Saving in-memory database to /mosquitto/data//mosquitto.db.
 1776880877: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776882676: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776884476: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776886275: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776887867: Client 5BC5ujnpcN88T3xGa9IQqy [172.18.0.3:54189] disconnected: connection closed by client.
+1776887876: New connection from 172.18.0.3:59769 on port 1883.
+1776887877: New client connected from 172.18.0.3:59769 as 2twwqBFwttzZYLU1Kg9WVo (p4, c1, k60).
+1776888074: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1776888560: Client 2twwqBFwttzZYLU1Kg9WVo [172.18.0.3:59769] disconnected: connection closed by client.
+1776888566: New connection from 172.18.0.3:50127 on port 1883.
+1776888566: New client connected from 172.18.0.3:50127 as 0h7pLsHWvh2dMtVrRjcp8I (p4, c1, k60).
+1776889075: Client 0h7pLsHWvh2dMtVrRjcp8I [172.18.0.3:50127] disconnected: connection closed by client.
+1776889083: New connection from 172.18.0.3:36597 on port 1883.
+1776889083: New client connected from 172.18.0.3:36597 as 1hRP8AWNYbaXqNplrY9spg (p4, c1, k60).
+1776889275: Client 1hRP8AWNYbaXqNplrY9spg [172.18.0.3:36597] disconnected: connection closed by client.
+1776889283: New connection from 172.18.0.3:37385 on port 1883.
+1776889283: New client connected from 172.18.0.3:37385 as 73IjOTgitDD0sfbedyh28Z (p4, c1, k60).
+1776889432: Client 73IjOTgitDD0sfbedyh28Z [172.18.0.3:37385] disconnected: connection closed by client.
+1776889441: New connection from 172.18.0.3:60841 on port 1883.
+1776889441: New client connected from 172.18.0.3:60841 as 0SldBdOywMkVDgFULJUeJy (p4, c1, k60).
+1776889573: Client 0SldBdOywMkVDgFULJUeJy [172.18.0.3:60841] disconnected: connection closed by client.
+1776889581: New connection from 172.18.0.3:33563 on port 1883.
+1776889581: New client connected from 172.18.0.3:33563 as 1lPI2VCfA2xQd41K5wBzSp (p4, c1, k60).
+1776889873: Saving in-memory database to /mosquitto/data//mosquitto.db.
