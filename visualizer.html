@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Theater Visualizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0c;
+  --panel:#131318;
+  --panel-2:#1a1a22;
+  --border:#26262f;
+  --text:#e8e8ec;
+  --dim:#7a7a85;
+  --accent:#ff4a1c;
+  --accent-2:#ffb800;
+  --ok:#3ecf6b;
+  --err:#ff3d5e;
+  --mono:"JetBrains Mono","SF Mono",Consolas,monospace;
+  --serif:"Instrument Serif",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;overflow:hidden}
+body{display:flex;flex-direction:column}
+header{
+  padding:10px 20px;background:var(--panel);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:20px}
+h1 span{color:var(--accent)}
+.tag{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+
+.mode-toggle{
+  display:flex;gap:2px;background:var(--panel-2);padding:2px;border-radius:4px;
+}
+.mode-toggle button{
+  background:transparent;border:none;color:var(--dim);padding:5px 10px;
+  font-family:var(--mono);font-size:10px;font-weight:500;cursor:pointer;
+  border-radius:3px;letter-spacing:1px;text-transform:uppercase;
+}
+.mode-toggle button.active{background:var(--accent);color:#000;font-weight:700}
+.mode-toggle button:hover:not(.active){color:var(--text)}
+
+.status{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:11px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--dim)}
+.dot.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.dot.err{background:var(--err);box-shadow:0 0 8px var(--err)}
+.dot.busy{background:var(--accent-2);box-shadow:0 0 8px var(--accent-2)}
+
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:30px;overflow:hidden;position:relative}
+.stage{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 48px;max-width:760px;width:100%}
+.lamp{aspect-ratio:1;border-radius:50%;background:#050505;position:relative;display:flex;align-items:center;justify-content:center;border:1px solid #1a1a1a}
+.lamp.tuya-mode{transition:all 200ms cubic-bezier(.4,0,.2,1)}
+.lamp.ideal-mode{transition:all 80ms linear}
+.lamp::after{content:attr(data-id);position:absolute;bottom:-26px;font-size:10px;color:var(--dim);letter-spacing:2px}
+.lamp .flash{
+  position:absolute;inset:-2px;border-radius:50%;
+  background:white;opacity:0;pointer-events:none;
+}
+.lamp .flash.active{
+  animation:flash 140ms ease-out;
+}
+@keyframes flash{
+  0%{opacity:0}20%{opacity:0.95}100%{opacity:0}
+}
+
+.setup{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100}
+.setup-inner{background:var(--panel);border:1px solid var(--border);padding:30px;max-width:500px;width:90%;display:flex;flex-direction:column;gap:16px}
+.setup h2{font-family:var(--serif);font-style:italic;font-size:26px;font-weight:400}
+.setup p{line-height:1.6;color:var(--dim);font-size:12px}
+.setup input{background:#0a0a0c;border:1px solid var(--border);color:var(--text);padding:10px;font-family:var(--mono);font-size:12px;border-radius:3px}
+.setup input:focus{outline:none;border-color:var(--accent)}
+.setup button{background:var(--accent);color:#000;border:none;padding:12px;font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;border-radius:3px}
+.setup button:hover{background:#fff}
+.setup label{font-size:10px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase}
+.err-msg{color:var(--err);font-size:11px;padding:8px 0;display:none}
+.err-msg.show{display:block}
+footer{padding:6px 20px;background:var(--panel);border-top:1px solid var(--border);font-size:10px;color:var(--dim);display:flex;gap:20px}
+footer span.warn{color:var(--accent-2)}
+.info{
+  position:absolute;bottom:20px;left:20px;background:var(--panel);padding:10px 14px;
+  border:1px solid var(--border);border-radius:4px;font-size:10px;color:var(--dim);max-width:320px;line-height:1.6;
+}
+.info.tuya{color:var(--accent-2);border-color:var(--accent-2)}
+.info b{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="setup" id="setup">
+  <div class="setup-inner">
+    <h2>Theater Visualizer</h2>
+    <p>Verbinden mit Home Assistant. Gib den Access Token ein (Profil → Sicherheit → Long-Lived Access Tokens).</p>
+    <label>HA URL</label>
+    <input id="url" value="http://localhost:8123">
+    <label>Access Token</label>
+    <input id="token" type="password" placeholder="eyJ...">
+    <div class="err-msg" id="errMsg"></div>
+    <button id="connect">Verbinden</button>
+  </div>
+</div>
+
+<header>
+  <h1>Theater<span>.</span>Vis</h1>
+  <div class="tag">Live Lichtvisualisierung</div>
+  <div class="mode-toggle">
+    <button id="mode-ideal" class="active">Ideal</button>
+    <button id="mode-tuya">Tuya LedAdvance</button>
+  </div>
+  <div class="status"><span id="statusText">verbindet...</span><span class="dot" id="statusDot"></span></div>
+</header>
+
+<main>
+  <div class="stage" id="stage"></div>
+  <div class="info" id="info">Ideal-Modus: zeigt exakt was HA sendet, mit smoothen transitions.</div>
+</main>
+
+<footer>
+  <span id="haUrl"></span>
+  <span id="eventCount">0 Events</span>
+  <span id="droppedCount" class="warn"></span>
+  <span style="margin-left:auto;cursor:pointer" onclick="disconnect()">Disconnect</span>
+</footer>
+
+<script>
+const LAMP_IDS = Array.from({length:12},(_,i)=>`light.l${i+1}`);
+let ws=null;
+let msgId=1;
+let eventCount=0;
+let droppedCount=0;
+let mode='ideal';
+
+const tuyaState = {};
+
+function log(...args){console.log('[vis]',...args)}
+
+function renderStage(){
+  const stage=document.getElementById('stage');
+  stage.innerHTML='';
+  for(const id of LAMP_IDS){
+    const d=document.createElement('div');
+    d.className='lamp '+(mode==='tuya'?'tuya-mode':'ideal-mode');d.id='l-'+id;
+    d.dataset.id=id.replace('light.','').toUpperCase();
+    const flash=document.createElement('div');flash.className='flash';d.appendChild(flash);
+    stage.appendChild(d);
+    tuyaState[id] = { lastCmdTs:0, queue:[], current:{on:false,r:255,g:255,b:255,br:0} };
+  }
+}
+renderStage();
+
+function renderLamp(id, targetState){
+  const el=document.getElementById('l-'+id);
+  if(!el)return;
+  const on = targetState.state === 'on';
+  const rgb = targetState.attributes && targetState.attributes.rgb_color;
+  const br  = targetState.attributes && targetState.attributes.brightness;
+  let r=255,g=255,b=255;
+  if(Array.isArray(rgb) && rgb.length>=3){r=rgb[0];g=rgb[1];b=rgb[2]}
+  const brPct = br ? br/255 : (on?1:0);
+  if(!on){
+    el.style.background='#050505';
+    el.style.boxShadow='none';
+    el.style.borderColor='#1a1a1a';
+    return;
+  }
+  const bf = Math.max(0.02, brPct);
+  const vr = Math.round(r*bf), vg = Math.round(g*bf), vb = Math.round(b*bf);
+  el.style.background = `rgb(${vr},${vg},${vb})`;
+  const glow = 20 + brPct*50;
+  el.style.boxShadow = `0 0 ${glow}px rgba(${r},${g},${b},${bf*0.8}), 0 0 ${glow*2}px rgba(${r},${g},${b},${bf*0.3})`;
+  el.style.borderColor = `rgba(${r},${g},${b},0.45)`;
+}
+
+function flashLamp(id){
+  const el=document.getElementById('l-'+id);
+  if(!el)return;
+  const f=el.querySelector('.flash');
+  f.classList.remove('active');
+  void f.offsetWidth;
+  f.classList.add('active');
+}
+
+// Tuya-Realität
+const TUYA_MIN_COMMAND_GAP_MS = 180;
+const TUYA_BASE_LATENCY_MS = 250;
+const TUYA_LATENCY_JITTER_MS = 150;
+
+function updateLamp(id, newState){
+  eventCount++;
+  document.getElementById('eventCount').textContent = eventCount+' Events';
+
+  if(mode==='ideal'){
+    renderLamp(id, newState);
+    return;
+  }
+
+  const ts = tuyaState[id];
+  const now = performance.now();
+  const tuyaAdjustedState = applyTuyaLimits(newState);
+
+  // Rate-Limit: zu schnelle Commands überschreiben einander (echte Lampe sieht das nicht)
+  const gap = now - ts.lastCmdTs;
+  if(gap < TUYA_MIN_COMMAND_GAP_MS && ts.queue.length>0){
+    droppedCount++;
+    document.getElementById('droppedCount').textContent = droppedCount+' Commands verworfen';
+    ts.queue[ts.queue.length-1] = tuyaAdjustedState;
+    return;
+  }
+
+  const oldMode = ts.current.on ? detectColorMode(ts.current) : null;
+  const newAttr = tuyaAdjustedState.attributes||{};
+  const newAttrColor = newAttr.rgb_color ? {r:newAttr.rgb_color[0],g:newAttr.rgb_color[1],b:newAttr.rgb_color[2]} : null;
+  const newMode = tuyaAdjustedState.state==='on' && newAttrColor ? detectColorMode(newAttrColor) : null;
+  const needsFlash = oldMode && newMode && oldMode !== newMode;
+
+  ts.queue.push(tuyaAdjustedState);
+  const myLatency = TUYA_BASE_LATENCY_MS + Math.random()*TUYA_LATENCY_JITTER_MS;
+
+  setTimeout(()=>{
+    if(ts.queue.length===0)return;
+    const cmd = ts.queue.shift();
+    if(needsFlash)flashLamp(id);
+    renderLamp(id, cmd);
+    const a = cmd.attributes||{};
+    ts.current = {
+      on: cmd.state==='on',
+      r: (a.rgb_color&&a.rgb_color[0])||255,
+      g: (a.rgb_color&&a.rgb_color[1])||255,
+      b: (a.rgb_color&&a.rgb_color[2])||255,
+      br: (a.brightness||0)/255*100,
+    };
+    ts.lastCmdTs = performance.now();
+  }, myLatency);
+}
+
+function detectColorMode(a){
+  if(!a)return 'off';
+  const r=a.r, g=a.g, b=a.b;
+  if(r===undefined)return 'white';
+  const max=Math.max(r,g,b), min=Math.min(r,g,b);
+  if(max-min < 30 && max > 200)return 'white';
+  return 'rgb';
+}
+
+function applyTuyaLimits(state){
+  const attr = {...(state.attributes||{})};
+  if(state.state==='on' && attr.brightness!==undefined){
+    const brPct = attr.brightness/255*100;
+    if(brPct < 1){
+      // Tuya Lampen können nicht unter ~1% - limitieren
+      attr.brightness = 3;
+    }
+  }
+  return {...state, attributes: attr};
+}
+
+function setStatus(cls, txt){
+  document.getElementById('statusDot').className='dot '+cls;
+  document.getElementById('statusText').textContent=txt;
+}
+
+function switchMode(newMode){
+  mode = newMode;
+  document.getElementById('mode-ideal').classList.toggle('active', mode==='ideal');
+  document.getElementById('mode-tuya').classList.toggle('active', mode==='tuya');
+  for(const id of LAMP_IDS){
+    const el=document.getElementById('l-'+id);
+    if(!el)continue;
+    el.classList.remove('tuya-mode','ideal-mode');
+    el.classList.add(mode==='tuya'?'tuya-mode':'ideal-mode');
+  }
+  const info=document.getElementById('info');
+  if(mode==='tuya'){
+    info.classList.add('tuya');
+    info.innerHTML = '<b>Tuya LedAdvance Modus</b><br>' +
+      '• ~250ms Command-Latenz<br>' +
+      '• <code>transition:</code> wird ignoriert, springt zum Endwert<br>' +
+      '• Commands < 180ms Abstand werden verworfen<br>' +
+      '• Color↔White-Mode-Wechsel blitzt weiß auf<br>' +
+      '• Brightness unter 1% = praktisch aus<br>' +
+      '<b style="color:var(--accent)">→ hier sollten Streit/Rot-Flicker anders aussehen!</b>';
+  }else{
+    info.classList.remove('tuya');
+    info.textContent = 'Ideal-Modus: zeigt exakt was HA sendet, mit smoothen transitions.';
+  }
+}
+document.getElementById('mode-ideal').onclick=()=>switchMode('ideal');
+document.getElementById('mode-tuya').onclick=()=>switchMode('tuya');
+
+function connect(url, token){
+  const wsUrl = url.replace(/^http/,'ws') + '/api/websocket';
+  document.getElementById('haUrl').textContent = url;
+  setStatus('busy','verbindet...');
+  ws = new WebSocket(wsUrl);
+  ws.onopen = ()=>log('WS open');
+  ws.onerror = ()=>{
+    setStatus('err','Fehler');
+    showSetupError('Verbindungsfehler. URL korrekt? HA läuft?');
+  };
+  ws.onclose = ()=>{
+    setStatus('err','getrennt');
+  };
+  ws.onmessage = (ev)=>{
+    const m = JSON.parse(ev.data);
+    if(m.type === 'auth_required'){
+      ws.send(JSON.stringify({type:'auth', access_token: token}));
+    } else if(m.type === 'auth_ok'){
+      setStatus('ok','verbunden');
+      document.getElementById('setup').style.display='none';
+      ws.send(JSON.stringify({id:msgId++, type:'get_states'}));
+      ws.send(JSON.stringify({id:msgId++, type:'subscribe_events', event_type:'state_changed'}));
+    } else if(m.type === 'auth_invalid'){
+      showSetupError('Token ungültig');
+      setStatus('err','auth fail');
+      ws.close();
+    } else if(m.type === 'result' && Array.isArray(m.result)){
+      for(const s of m.result){
+        if(LAMP_IDS.includes(s.entity_id))renderLamp(s.entity_id, s);
+      }
+    } else if(m.type === 'event' && m.event && m.event.event_type==='state_changed'){
+      const data = m.event.data;
+      if(data && LAMP_IDS.includes(data.entity_id)){
+        updateLamp(data.entity_id, data.new_state);
+      }
+    }
+  };
+}
+
+function disconnect(){
+  if(ws)ws.close();
+  document.getElementById('setup').style.display='flex';
+  setStatus('','getrennt');
+}
+
+function showSetupError(msg){
+  const el = document.getElementById('errMsg');
+  el.textContent = msg;
+  el.classList.add('show');
+  document.getElementById('setup').style.display='flex';
+}
+
+document.getElementById('connect').onclick = ()=>{
+  const url = document.getElementById('url').value.trim().replace(/\/$/,'');
+  const token = document.getElementById('token').value.trim();
+  if(!token){showSetupError('Bitte Token eingeben');return}
+  document.getElementById('errMsg').classList.remove('show');
+  try{
+    sessionStorage.setItem('ha_url',url);
+    sessionStorage.setItem('ha_token',token);
+  }catch(e){}
+  connect(url, token);
+};
+
+try{
+  const savedUrl = sessionStorage.getItem('ha_url');
+  const savedToken = sessionStorage.getItem('ha_token');
+  if(savedUrl && savedToken){
+    document.getElementById('url').value = savedUrl;
+    document.getElementById('token').value = savedToken;
+  }
+}catch(e){}
+</script>
+</body>
+</html>

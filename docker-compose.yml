@@ -1,0 +1,26 @@
+services:
+  homeassistant:
+    container_name: theater-ha
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Europe/Zurich
+    depends_on:
+      - mosquitto
+
+  mosquitto:
+    container_name: theater-mqtt
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log

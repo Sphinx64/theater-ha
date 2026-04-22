@@ -1,0 +1,173 @@
+# Theater Testsetup - configuration.yaml
+# 12 virtuelle Lampen über MQTT (mosquitto Container)
+
+default_config:
+
+logger:
+  default: info
+  logs:
+    homeassistant.components.script: debug
+    homeassistant.components.mqtt: info
+
+script: !include scripts.yaml
+
+# ============================================================
+# Input Helpers
+# ============================================================
+input_number:
+  theater_master_brightness:
+    name: Master Helligkeit
+    min: 0
+    max: 1000
+    step: 10
+    initial: 500
+    mode: slider
+
+  theater_master_speed:
+    name: Master Speed
+    min: 0
+    max: 100
+    step: 1
+    initial: 50
+    mode: slider
+
+  theater_streit_phase:
+    name: Streit-Phase
+    min: 1
+    max: 8
+    step: 1
+    initial: 1
+    mode: slider
+
+input_text:
+  theater_farbe_gelb:
+    name: Farbe Gelb (R,G,B)
+    initial: "255,126,13"
+    max: 20
+
+  theater_farbe_blau:
+    name: Farbe Blau (R,G,B)
+    initial: "0,150,255"
+    max: 20
+
+  theater_farbe_rot:
+    name: Farbe Rot (R,G,B)
+    initial: "255,0,0"
+    max: 20
+
+  theater_master_stop_skip:
+    name: Master-Stop-Skip
+    initial: ""
+    max: 100
+
+# ============================================================
+# 12 virtuelle Lampen via MQTT
+# Jede Lampe published ihre State-Änderungen als JSON auf
+#   theater/light/lN/state
+# Das nutzt der Visualizer, um live zu rendern.
+# ============================================================
+mqtt:
+  light:
+    - name: "l1"
+      unique_id: theater_l1
+      schema: json
+      command_topic: "theater/light/l1/set"
+      state_topic: "theater/light/l1/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l2"
+      unique_id: theater_l2
+      schema: json
+      command_topic: "theater/light/l2/set"
+      state_topic: "theater/light/l2/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l3"
+      unique_id: theater_l3
+      schema: json
+      command_topic: "theater/light/l3/set"
+      state_topic: "theater/light/l3/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l4"
+      unique_id: theater_l4
+      schema: json
+      command_topic: "theater/light/l4/set"
+      state_topic: "theater/light/l4/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l5"
+      unique_id: theater_l5
+      schema: json
+      command_topic: "theater/light/l5/set"
+      state_topic: "theater/light/l5/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l6"
+      unique_id: theater_l6
+      schema: json
+      command_topic: "theater/light/l6/set"
+      state_topic: "theater/light/l6/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l7"
+      unique_id: theater_l7
+      schema: json
+      command_topic: "theater/light/l7/set"
+      state_topic: "theater/light/l7/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l8"
+      unique_id: theater_l8
+      schema: json
+      command_topic: "theater/light/l8/set"
+      state_topic: "theater/light/l8/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l9"
+      unique_id: theater_l9
+      schema: json
+      command_topic: "theater/light/l9/set"
+      state_topic: "theater/light/l9/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l10"
+      unique_id: theater_l10
+      schema: json
+      command_topic: "theater/light/l10/set"
+      state_topic: "theater/light/l10/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l11"
+      unique_id: theater_l11
+      schema: json
+      command_topic: "theater/light/l11/set"
+      state_topic: "theater/light/l11/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+    - name: "l12"
+      unique_id: theater_l12
+      schema: json
+      command_topic: "theater/light/l12/set"
+      state_topic: "theater/light/l12/state"
+      brightness: true
+      supported_color_modes: ["rgb"]
+      optimistic: true
+
+# CORS für Visualizer
+http:
+  cors_allowed_origins:
+    - "http://localhost"
+    - "http://127.0.0.1"
+    - "null"

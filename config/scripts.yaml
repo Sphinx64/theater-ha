@@ -1,0 +1,3366 @@
+einzeltropfen:
+  alias: Einzeltropfen
+  mode: parallel
+  fields:
+    target_light:
+      description: Welche Lampe?
+    drop_color:
+      description: Farbe
+  sequence:
+  - target:
+      entity_id: '{{ target_light }}'
+    data:
+      rgb_color: '{{ drop_color }}'
+      brightness_pct: 100
+    action: light.turn_on
+  - delay:
+      milliseconds: 300
+  - target:
+      entity_id: '{{ target_light }}'
+    action: light.turn_off
+  description: ''
+theater_neutral_v2:
+  alias: 'Theater: Neutral v2'
+  icon: mdi:lightbulb-on-outline
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_neutral_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      brightness_pct: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
+      transition: 0
+theater_blau_v2:
+  alias: 'Theater: Blau v2'
+  icon: mdi:water
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_blau_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_neutral_v2
+  - delay: '00:00:00.5'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l5
+      - light.l9
+    data:
+      rgb_color:
+      - 0
+      - 150
+      - 255
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+      transition: 3
+  - delay: '00:00:00.5'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l2
+      - light.l6
+      - light.l10
+    data:
+      rgb_color:
+      - 0
+      - 150
+      - 255
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+      transition: 3
+  - delay: '00:00:00.5'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l3
+      - light.l7
+      - light.l11
+    data:
+      rgb_color:
+      - 0
+      - 150
+      - 255
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+      transition: 3
+  - delay: '00:00:00.5'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l4
+      - light.l8
+      - light.l12
+    data:
+      rgb_color:
+      - 0
+      - 150
+      - 255
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+      transition: 3
+theater_rot_v2:
+  alias: 'Theater: Rot v2'
+  icon: mdi:fire
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_rot_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_neutral_v2
+  - delay: 00:00:01
+  - variables:
+      br: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ [br * 0.18, 1] | max | int }}'
+      transition: 0.18
+  - delay: '00:00:00.2'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0.1
+  - delay: '00:00:00.18'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ [br * 0.08, 1] | max | int }}'
+      transition: 0.1
+  - delay: '00:00:00.12'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0.07
+  - delay: '00:00:00.1'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ [br * 0.05, 1] | max | int }}'
+      transition: 0.08
+  - delay: '00:00:00.1'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0.05
+  - delay: '00:00:00.08'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l5
+      - light.l9
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l4
+      - light.l8
+      - light.l12
+    data:
+      brightness_pct: '{{ [br * 0.02, 1] | max | int }}'
+      transition: 0
+  - delay: '00:00:00.07'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l4
+      - light.l8
+      - light.l12
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l5
+      - light.l9
+    data:
+      brightness_pct: '{{ [br * 0.02, 1] | max | int }}'
+      transition: 0
+  - delay: '00:00:00.06'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l2
+      - light.l7
+      - light.l10
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l8
+      - light.l9
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ [br * 0.02, 1] | max | int }}'
+      transition: 0
+  - delay: '00:00:00.06'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l3
+      - light.l6
+      - light.l11
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l4
+      - light.l5
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l12
+    data:
+      brightness_pct: '{{ [br * 0.02, 1] | max | int }}'
+      transition: 0
+  - delay: '00:00:00.06'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l6
+      - light.l12
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+    data:
+      brightness_pct: '{{ [br * 0.02, 1] | max | int }}'
+      transition: 0
+  - delay: '00:00:00.05'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l4
+      - light.l9
+      - light.l11
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l10
+      - light.l12
+    data:
+      brightness_pct: '{{ [br * 0.02, 1] | max | int }}'
+      transition: 0
+  - delay: '00:00:00.05'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      brightness_pct: '{{ br }}'
+      transition: 0
+  - delay: '00:00:00.07'
+  - action: light.turn_off
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+  - delay: '00:00:00.4'
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color:
+      - 255
+      - 36
+      - 3
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+      transition: 0
+theater_gelb_v2:
+  alias: 'Theater: Gelb v2'
+  icon: mdi:white-balance-sunny
+  mode: restart
+  description: Master-Helligkeit (input_number.theater_master_brightness), inkl. Werte
+    >100 wie bei Finale.
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_gelb_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_neutral_v2
+  - delay: 00:00:01
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color:
+      - 255
+      - 126
+      - 13
+      brightness_pct: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
+      transition: 6
+theater_grau_v2:
+  alias: 'Theater: Grau v2'
+  icon: mdi:cloud
+  mode: restart
+  fields:
+    skip_entity_id:
+      description: Veraltet – ignoriert
+      required: false
+      selector:
+        text: {}
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_grau_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      hs_color:
+      - 290
+      - 7
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+      transition: 0
+  - variables:
+      s: "{{ states('input_number.theater_master_speed') | int(50) }}"
+  - delay: 00:00:01
+  - repeat:
+      while:
+      - condition: template
+        value_template: 'true'
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id:
+          - light.l1
+          - light.l2
+          - light.l3
+          - light.l4
+          - light.l5
+          - light.l6
+          - light.l7
+          - light.l8
+          - light.l9
+          - light.l10
+          - light.l11
+          - light.l12
+        data:
+          hs_color:
+          - 290
+          - 7
+          brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10 * 0.8) | int, 1] | max }}'
+          transition: '{{ [3.5 - (s / 100.0) * 3.2, 0.2] | max | round(2) }}'
+      - delay:
+          seconds: '{{ [3.8 - (s / 100.0) * 3.5, 0.3] | max | round(1) }}'
+      - action: light.turn_on
+        target:
+          entity_id:
+          - light.l1
+          - light.l2
+          - light.l3
+          - light.l4
+          - light.l5
+          - light.l6
+          - light.l7
+          - light.l8
+          - light.l9
+          - light.l10
+          - light.l11
+          - light.l12
+        data:
+          hs_color:
+          - 290
+          - 7
+          brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+          transition: '{{ [3.5 - (s / 100.0) * 3.2, 0.2] | max | round(2) }}'
+      - delay: '00:00:03.5'
+theater_streit_lauf_v2:
+  alias: 'Theater: Streit – Phasen 1–6'
+  icon: mdi:lightning-bolt
+  mode: restart
+  fields:
+    skip_entity_id:
+      description: Veraltet – ignoriert
+      required: false
+      selector:
+        text: {}
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_lauf_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - repeat:
+      while:
+        - condition: template
+          value_template: 'true'
+      sequence:
+      - variables:
+          p: '{{ states(''input_number.theater_streit_phase'') | int(1) }}'
+          s: '{{ states(''input_number.theater_master_speed'') | int(50) }}'
+          br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+          lamp: '{{ ''light.l'' + (range(1, 13) | random | string) }}'
+          ri: '{{ range(2) | random }}'
+          fr: '{% if p in [1,4] and ri|int==0 %}255{% elif p in [1,4] %}0{% elif p
+            in [2,5] and ri|int==0 %}255{% elif p in [2,5] %}255{% elif p in [3,6]
+            and ri|int==0 %}255{% elif p in [3,6] %}0{% else %}255{% endif %}'
+          fg: '{% if p in [1,4] and ri|int==0 %}36{% elif p in [1,4] %}150{% elif
+            p in [2,5] and ri|int==0 %}0{% elif p in [2,5] %}255{% elif p in [3,6]
+            and ri|int==0 %}126{% else %}150{% endif %}'
+          fb: '{% if p in [1,4] and ri|int==0 %}3{% elif p in [1,4] %}255{% elif p
+            in [2,5] and ri|int==0 %}0{% elif p in [2,5] %}0{% elif p in [3,6] and
+            ri|int==0 %}13{% else %}255{% endif %}'
+          cr: '{% if p in [1,4] %}255{% elif p in [2,5] %}0{% elif p in [3,6] %}255{%
+            else %}252{% endif %}'
+          cg: '{% if p in [1,4] %}126{% elif p in [2,5] %}150{% elif p in [3,6] %}36{%
+            else %}237{% endif %}'
+          cb: '{% if p in [1,4] %}13{% elif p in [2,5] %}255{% elif p in [3,6] %}3{%
+            else %}255{% endif %}'
+      - action: light.turn_on
+        target:
+          entity_id: '{{ lamp }}'
+        data:
+          rgb_color: '{{ [fr|int, fg|int, fb|int] }}'
+          brightness_pct: 100
+          transition: 0
+      - delay:
+          milliseconds: '{{ [480 - s * 3.5, 85] | max }}'
+      - action: light.turn_on
+        target:
+          entity_id: '{{ lamp }}'
+        data:
+          rgb_color: '{{ [cr|int, cg|int, cb|int] }}'
+          brightness_pct: '{{ br }}'
+          transition: 0
+      - delay:
+          milliseconds: '{% set p = states(''input_number.theater_streit_phase'')
+            | int(1) %}{% set s = states(''input_number.theater_master_speed'') |
+            int(50) %}{% set w = ([420 - s * 7.5, 32] | max) | int %}{% if p in [4,5,6]
+            %}{{ (w * 0.42) | int }}{% else %}{{ (w * 0.58) | int }}{% endif %}'
+theater_streit_p7_v2:
+  alias: 'Theater: Streit Phase 7 – R/B/Y → Grau (15 s)'
+  icon: mdi:lightning-bolt-circle
+  mode: restart
+  fields:
+    skip_entity_id:
+      description: Veraltet – ohne Wirkung (Skip über input_text.theater_master_stop_skip)
+      required: false
+      selector:
+        text: {}
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_p7_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 50] | min }}'
+      transition: 0
+  - repeat:
+      while:
+      - condition: template
+        value_template: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+          %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{{ t <
+          15.0 }}"
+      sequence:
+      - parallel:
+        - action: light.turn_on
+          target:
+            entity_id: light.l1
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 1 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l2
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 2 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l3
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 3 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l4
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 4 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l5
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 5 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l6
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 6 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l7
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 7 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l8
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 8 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l9
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 9 %}{% set ph = ((t * sp + ni * 0.37) |
+              int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph == 1
+              %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l10
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 10 %}{% set ph = ((t * sp + ni * 0.37)
+              | int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph ==
+              1 %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l11
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 11 %}{% set ph = ((t * sp + ni * 0.37)
+              | int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph ==
+              1 %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+        - action: light.turn_on
+          target:
+            entity_id: light.l12
+          data:
+            rgb_color: "{% set ts = state_attr('script.theater_streit_p7_v2', 'last_triggered')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set sp = 12 %}{% set ni = 12 %}{% set ph = ((t * sp + ni * 0.37)
+              | int) % 3 %}{% if ph == 0 %}{% set r,g,b = 255,0,0 %}{% elif ph ==
+              1 %}{% set r,g,b = 0,0,255 %}{% else %}{% set r,g,b = 255,126,13 %}{% endif
+              %}{{ [(r * (1 - mix) + 252 * mix) | round | int, (g * (1 - mix) + 237
+              * mix) | round | int, (b * (1 - mix) + 255 * mix) | round | int] }}"
+            brightness_pct: '{% set ts = state_attr(''script.theater_streit_p7_v2'', ''last_triggered'')
+              %}{% set t = (now().timestamp() - as_timestamp(ts)) if ts else 0 %}{%
+              set step = ([(t * 10 / 15) | int, 10] | min) %}{% set mix = step / 10.0
+              %}{% set m = (states(''input_number.theater_master_brightness'') | float(500) / 10) | int %}{% set b_hi = [m, 50] | min %}{% set b_end = [m, 1] | min %}{% set b
+              = ((b_hi * (1 - mix) + b_end * mix) | round | int) %}{{ [b, 1] | max }}'
+            transition: 0
+      - delay:
+          milliseconds: 80
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+    data:
+      hs_color:
+      - 290
+      - 7
+      brightness_pct: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+      transition: 3
+theater_streit_phase_1_v2:
+  alias: 'Theater: Streit Phase 1 (Gelb) v2'
+  icon: mdi:circle
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_phase_1_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l5
+      - light.l6
+      - light.l9
+      - light.l10
+      - light.l4
+      - light.l7
+      - light.l8
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: '{% set c = states(''input_text.theater_farbe_gelb'') %}{{ (c if
+        '','' in c else ''255,126,13'').split('','') | map(''int'') | list }}'
+      brightness_pct: '50'
+      transition: 0
+  - parallel:
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l1
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l11
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l12
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l12
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l1
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                 %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l1
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cg%}{%elif
+                p==2%}{%set c=cb%}{%elif p==3%}{%set c=cr%}{%else%}{%set c=''252,237,255''%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l2
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l2
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cg%}{%elif
+                p==2%}{%set c=cb%}{%elif p==3%}{%set c=cr%}{%else%}{%set c=''252,237,255''%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l3
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l3
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cg%}{%elif
+                p==2%}{%set c=cb%}{%elif p==3%}{%set c=cr%}{%else%}{%set c=''252,237,255''%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l4
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l4
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l5
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l5
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l6
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l6
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l7
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l7
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l8
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l8
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l9
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l9
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l10
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l10
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l11
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l11
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_rot'')
+                if '','' in states(''input_text.theater_farbe_rot'') else ''255,0,0''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_gelb'') if '','' in
+                states(''input_text.theater_farbe_gelb'') else ''255,126,13'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l12
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l12
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+theater_streit_phase_2_v2:
+  alias: 'Theater: Streit Phase 2 (Blau) v2'
+  icon: mdi:circle
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_phase_2_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l5
+      - light.l6
+      - light.l9
+      - light.l10
+      - light.l4
+      - light.l7
+      - light.l8
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{ (c if
+        '','' in c else ''0,150,255'').split('','') | map(''int'') | list }}'
+      brightness_pct: '50'
+      transition: 0
+  - parallel:
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l1
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l2
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l3
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l4
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l5
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l6
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l7
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l8
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l9
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l10
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l11
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_rot'') if '','' in states(''input_text.theater_farbe_rot'')
+                else ''255,0,0'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_blau'') if '','' in
+                states(''input_text.theater_farbe_blau'') else ''0,150,255'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l12
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id:
+              - light.l1
+              - light.l2
+              - light.l3
+              - light.l5
+              - light.l6
+              - light.l9
+              - light.l10
+              - light.l4
+              - light.l7
+              - light.l8
+              - light.l11
+              - light.l12
+            data:
+              rgb_color: '{% set c = states(''input_text.theater_farbe_blau'') %}{{
+                (c if '','' in c else ''0,150,255'').split('','') | map(''int'') |
+                list }}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+theater_streit_phase_3_v2:
+  alias: 'Theater: Streit Phase 3 (Rot) v2'
+  icon: mdi:circle
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_streit_phase_3_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l5
+      - light.l6
+      - light.l9
+      - light.l10
+      - light.l4
+      - light.l7
+      - light.l8
+      - light.l11
+      - light.l12
+    data:
+      rgb_color: '{% set c = states(''input_text.theater_farbe_rot'') %}{{ (c if '',''
+        in c else ''255,0,0'').split('','') | map(''int'') | list }}'
+      brightness_pct: '50'
+      transition: 0
+  - parallel:
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l1
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l1
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l2
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l2
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l3
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l3
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l4
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l4
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l5
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l5
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l6
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l6
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l7
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l7
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l8
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l8
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l9
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l9
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l10
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l10
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l11
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l11
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+    - sequence:
+      - delay: '{% set s = states(''input_number.theater_master_speed'') | int(50)
+          %} {% set base = [100, 3000 - s * 29] | max %} {% set jit = range(0, [100,
+          2000 - s * 19] | max) | random %} {{ (base + jit) / 1000 }}'
+      - repeat:
+          while:
+          - condition: template
+            value_template: 'true'
+          sequence:
+          - variables:
+              flash_color: '{% set options = [(states(''input_text.theater_farbe_gelb'')
+                if '','' in states(''input_text.theater_farbe_gelb'') else ''255,126,13''),
+                (states(''input_text.theater_farbe_blau'') if '','' in states(''input_text.theater_farbe_blau'')
+                else ''0,150,255'')] %} {{ options | random }}'
+              base_color: '{{ states(''input_text.theater_farbe_rot'') if '','' in
+                states(''input_text.theater_farbe_rot'') else ''255,0,0'' }}'
+              master_br: '{{ [(states(''input_number.theater_master_brightness'') | float(500) / 10) | int, 100] | min }}'
+              flash_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {{ [100, 400 - s * 3] | max / 1000 }}'
+              wait_sec: '{% set s = states(''input_number.theater_master_speed'')
+                | int(50) %} {% set base = [100, 3000 - s * 29] | max %} {% set jit
+                = range(0, [100, 2000 - s * 19] | max) | random %} {{ (base + jit)
+                / 1000 }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l12
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: 100
+              transition: 0
+          - delay: '{{ flash_sec }}'
+          - action: light.turn_on
+            target:
+              entity_id: light.l12
+            data:
+              rgb_color: '{% set p=[1,2,3,1,2,3,4,5][(([states(''input_number.theater_streit_phase'')|int(1),8]|min)-1)]
+                %}{%set cg=states(''input_text.theater_farbe_gelb'') %}{%set cg=cg
+                if'',''in cg else''255,126,13'' %}{%set cb=states(''input_text.theater_farbe_blau'')
+                %}{%set cb=cb if'',''in cb else''0,150,255'' %}{%set cr=states(''input_text.theater_farbe_rot'')
+                %}{%set cr=cr if'',''in cr else''255,0,0'' %}{%if p==1%}{%set c=cr
+                if range(0,2)|random==0 else cb%}{%elif p==2%}{%set r3=range(0,3)|random%}{%set
+                c=cb if r3==0 else(cg if r3==1 else cr)%}{%elif p==3%}{%set c=cg if
+                range(0,2)|random==0 else cb%}{%elif p==5%}{%set c=[''220,175,100'',''90,155,225'',''210,80,95'']|random%}{%else%}{%set
+                r=range(0,3)|random%}{%set c=cg if r==0 else(cb if r==1 else cr)%}{%endif%}{{c.split('','')|map(''int'')|list}}'
+              brightness_pct: '50'
+              transition: 0
+          - delay: '{{ wait_sec }}'
+theater_master_stop_v2:
+  alias: 'Theater: Master Stop v2'
+  icon: mdi:stop
+  mode: restart
+  sequence:
+  - variables:
+      skip: "{{ states('input_text.theater_master_stop_skip') }}"
+  - repeat:
+      for_each:
+      - script.theater_neutral_v2
+      - script.theater_blau_v2
+      - script.theater_rot_v2
+      - script.theater_gelb_v2
+      - script.theater_grau_v2
+      - script.theater_streit_lauf_v2
+      - script.theater_streit_p7_v2
+      - script.theater_streit_phase_1_v2
+      - script.theater_streit_phase_2_v2
+      - script.theater_streit_phase_3_v2
+      - script.theater_finale_v2
+      - script.theater_finale_helper_v2
+      sequence:
+      - condition: template
+        value_template: "{{ repeat.item != skip }}"
+      - action: script.turn_off
+        target:
+          entity_id: "{{ repeat.item }}"
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: ''
+theater_blackout_v2:
+  alias: 'Theater: Blackout'
+  icon: mdi:lightbulb-off
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: ''
+  - action: script.theater_master_stop_v2
+  - action: light.turn_off
+    target:
+      entity_id:
+      - light.l1
+      - light.l2
+      - light.l3
+      - light.l4
+      - light.l5
+      - light.l6
+      - light.l7
+      - light.l8
+      - light.l9
+      - light.l10
+      - light.l11
+      - light.l12
+theater_finale_helper_v2:
+  alias: 'Theater: Finale Helper'
+  icon: mdi:palette
+  mode: parallel
+  max: 12
+  fields:
+    lamp:
+      description: Lampen-Entity-ID
+    start_hue:
+      description: Start-Farbton (0-359)
+  sequence:
+  - variables:
+      start_time: '{{ now().timestamp() }}'
+  - repeat:
+      while:
+      - condition: template
+        value_template: 'true'
+      sequence:
+      - variables:
+          s: "{{ states('input_number.theater_master_speed') | float(50) }}"
+          cycle_sec: "{{ [30, 300 - s * 2.7] | max | round(1) }}"
+          step_sec: "{{ [0.3, (cycle_sec / 360)] | max | round(2) }}"
+          elapsed: '{{ now().timestamp() - start_time }}'
+          hue: "{{ ((start_hue | float + (elapsed / cycle_sec * 360)) % 360) | round(1) }}"
+          br: "{{ [(states('input_number.theater_master_brightness') | float(500) / 10) | int, 100] | min }}"
+      - action: light.turn_on
+        target:
+          entity_id: '{{ lamp }}'
+        data:
+          hs_color:
+          - '{{ hue }}'
+          - 100
+          brightness_pct: '{{ br }}'
+          transition: '{{ step_sec }}'
+      - delay: '{{ step_sec }}'
+theater_finale_v2:
+  alias: 'Theater: Finale'
+  icon: mdi:rainbow
+  mode: restart
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.theater_master_stop_skip
+    data:
+      value: script.theater_finale_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_master_stop_v2
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l1
+        start_hue: 0
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l2
+        start_hue: 30
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l3
+        start_hue: 60
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l4
+        start_hue: 90
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l5
+        start_hue: 120
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l6
+        start_hue: 150
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l7
+        start_hue: 180
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l8
+        start_hue: 210
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l9
+        start_hue: 240
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l10
+        start_hue: 270
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l11
+        start_hue: 300
+  - action: script.turn_on
+    target:
+      entity_id: script.theater_finale_helper_v2
+    data:
+      variables:
+        lamp: light.l12
+        start_hue: 330
